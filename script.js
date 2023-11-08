@@ -1,3 +1,6 @@
+const storedCart = JSON.parse(localStorage.getItem("cart"));
+const cart = storedCart || [];
+
 const fetchData = () => {
   fetch("https://striveschool-api.herokuapp.com/books")
     .then((response) => {
@@ -10,6 +13,7 @@ const fetchData = () => {
     .then((books) => {
       console.log(books);
       const cardsDiv = document.getElementById("cards-div");
+
       books.forEach((book) => {
         const divRow = document.createElement("div");
         divRow.className = "g-1 col-6 col-md-4 col-lg-3 col-xl-2 align-items-center ";
@@ -18,6 +22,7 @@ const fetchData = () => {
         const img = document.createElement("img");
         img.className = "card-img-top";
         img.src = book.img;
+        img.style = "height:350px;";
         const divCardBody = document.createElement("div");
         divCardBody.className = "card-body bg-info-subtle p-2";
         const h5 = document.createElement("h5");
@@ -32,6 +37,7 @@ const fetchData = () => {
         const button = document.createElement("button");
         button.className = "btn btn-success";
         button.innerText = "Aggiungi al carrello";
+
         divCardBody.appendChild(h5);
         divCardBody.appendChild(p);
         divCardBody.appendChild(a);
@@ -44,9 +50,28 @@ const fetchData = () => {
           divRow.remove();
         });
         button.addEventListener("click", function (e) {
-          localStorage.setItem("book", book.title);
+          cart.push(book);
+          addToCart();
+
+          //   list.innerHTML = cart.map((cartBook) => `<li class="list-group-item">${cartBook.title}</li>`).join("");
+
+          localStorage.setItem("cart", JSON.stringify(cart));
         });
       });
     });
 };
-fetchData();
+window.onload = function () {
+  fetchData();
+  addToCart();
+};
+
+const addToCart = function () {
+  list.innerHTML = "";
+  cart.forEach((cartBook) => {
+    const list = document.getElementById("list");
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+    li.innerText = cartBook.title;
+    list.appendChild(li);
+  });
+};
