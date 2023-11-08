@@ -29,15 +29,22 @@ const fetchData = () => {
         const a = document.createElement("a");
         a.className = "btn btn-primary mb-3";
         a.innerText = "Scarta";
+        const button = document.createElement("button");
+        button.className = "btn btn-success";
+        button.innerText = "Aggiungi al carrello";
         divCardBody.appendChild(h5);
         divCardBody.appendChild(p);
         divCardBody.appendChild(a);
+        divCardBody.appendChild(button);
         divCard.appendChild(img);
         divCard.appendChild(divCardBody);
         divRow.appendChild(divCard);
         cardsDiv.appendChild(divRow);
         a.addEventListener("click", function (e) {
           divRow.remove();
+        });
+        button.addEventListener("click", function (e) {
+          localStorage.setItem("book", book.title);
         });
       });
     });
